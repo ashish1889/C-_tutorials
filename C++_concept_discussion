@@ -1,0 +1,252 @@
+// C++ Program to demonstrate Virtual
+// functions in derived classes
+//Here concept learned was assignment of params starts from left and the default value assignment 
+//is at compile time and default value for that function is picked whose object pointer is used
+#if 0
+#include <iostream>
+using namespace std;
+
+class A {
+public:
+	virtual void fun(int x = 10,int y= 20) { cout << "\n A::fun() called "<<x<<":"<<y; }
+};
+
+class B : public A {
+public:
+	void fun(int x = 11,int y = 30) { cout << "\n B::fun() called: %d "<<x<<":"<<y; }
+};
+
+class C : public B {
+public:
+	void fun(int x ,int y=40) { cout << "\n C::fun() called "<<x<<":"<<y; }
+};
+
+int main()
+{
+	// An object of class C
+	C c;
+
+	// A pointer of class B pointing
+	// to memory location of c
+	#if 0
+	A* b = &c;
+	#endif
+	
+	B b;
+	
+	A* a = &b;
+
+	// this line prints "C::fun() called"
+	a->fun(25);
+
+	getchar(); // to get the next character
+	return 0;
+}
+
+#endif
+#if 0
+// C++ Program to demonstrate a pure virtual destructor
+//Here if we put destructor as virtual in base class, then we need to have implementation
+// in child class also for destructor, if ~Derived() = delete; then compile time error comes
+#include <iostream>
+using namespace std;
+
+// Initialization of base class
+class Base {
+public:
+	virtual ~Base();
+	// Pure virtual destructor
+};
+
+Base:: ~Base()
+{
+   cout << "~Base() is executed"; 
+}
+
+// Initialization of derived class
+class Derived : public Base {
+public:
+	~Derived() { cout << "~Derived() is executed"; }
+//~Derived() = delete;
+};
+
+// Driver Code
+int main()
+{
+	// base class pointer which is
+	// allocating fresh storage
+	// for Derived function object's
+	Base* b = new Derived();
+	delete b;
+	return 0;
+}
+#endif
+
+#if 0
+// C++ program to demonstrate
+// Run Time Type Identification(RTTI)
+// but without virtual function 
+
+#include <iostream>
+using namespace std;
+
+// initialization of base class
+class B {
+    virtual void fun(){}
+};
+
+// initialization of derived class
+class D : public B {};
+class A : public B {};
+
+// Driver Code
+int main()
+{
+	B* b = new D; // Base class pointer
+//	D* d = dynamic_cast<D*>(b); // Derived class pointer
+	A* d = dynamic_cast<A*>(b); // Derived class pointer
+	if (d != NULL)
+		cout << "works";
+	else
+		cout << "cannot cast B* to D*";
+	getchar(); // to get the next character 
+	return 0;
+}
+#endif
+
+#if 0
+// C++ program to demonstrate how a
+// virtual function can be private
+#include <iostream>
+
+class base {
+public:
+	// default base constructor
+	base() { std::cout << "base class constructor\n"; }
+
+	// virtual base destructor
+	// always use virtual base
+	// destructors when you know you
+	// will inherit this class
+	virtual ~base()
+	{
+		std::cout << "base class destructor\n";
+	}
+	// public method in base class
+	void show()
+	{
+		std::cout << "show() called on base class\n";
+	}
+
+	// public virtual function in base class,
+	// contents of this function are printed when called
+	// with base class object when called with base class
+	// pointer contents of derived class are printed on
+	// screen
+	virtual void print()
+	{
+		std::cout << "print() called on base class\n";
+	}
+};
+
+class derived : public base {
+public:
+	// default derived constructor
+	derived()
+		: base()
+	{
+		std::cout << "derived class constructor\n";
+	}
+	// virtual derived destructor
+	// always use virtual destructors
+	// when inheriting from a
+	// base class
+	virtual ~derived()
+	{
+		std::cout << "derived class destructor\n";
+	}
+
+private:
+	// private virtual function in derived class overwrites
+	// base class virtual method contents of this function
+	// are printed when called with base class pointer or
+	// when called with derived class object
+	virtual void print()
+	{
+		std::cout << "print() called on derived class\n";
+	}
+	
+};
+
+int main()
+{
+	//std::cout << "printing with base class pointer\n";
+
+	// construct base class pointer with derived class
+	// memory
+	base* b_ptr = new derived();
+
+	// call base class show()
+	b_ptr->show();
+
+	// call virtual print in base class but it is overridden
+	// in derived class also note that print() is private
+	// member in derived class, still the contents of
+	// derived class are printed this code works because
+	// base class defines a public interface and drived
+	// class overrides it in its implementation
+	b_ptr->print();
+
+	delete b_ptr;
+}
+#endif
+
+//Diamond problem code
+
+#include <iostream>
+
+class Animal {
+public:
+    Animal(){
+        std::cout<<"Animal constructor\n";
+    }
+    void makeSound() {
+        std::cout << "Animal sound\n";
+    }
+};
+
+class Mammal :  virtual public Animal { // Virtual inheritance
+public:
+    Mammal(){
+        std::cout<<"Mammal constructor\n";
+    }
+    void move() {
+        std::cout << "Mammal moves\n";
+    }
+};
+
+class Bird :  virtual public Animal { // Virtual inheritance
+public:
+    Bird(){
+        std::cout<<"Bird constructor\n";
+    }
+    void move() {
+        std::cout << "Bird moves\n";
+    }
+};
+
+class Bat :  public Bird,public Mammal {
+public:
+    Bat(){
+        std::cout<<"Bat constructor\n";
+    }
+    // ...
+};
+
+int main() {
+    Bat bat;
+   // bat.makeSound(); // Output: Animal sound
+   // bat.move();      // Output: Mammal moves
+
+    return 0;
+}
