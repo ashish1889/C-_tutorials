@@ -1,0 +1,48 @@
+Memory Segments:
+
+1. Text Segment (Code Segment):
+  - Contains the executable code of the program.
+  - Usually read-only to prevent accidental modification.
+  - Instructions of the compiled program reside here.
+  - The starting address of this segment is often fixed and is platform-dependent.
+
+2. Data Segment:
+  - Initialized Data (Data/BSS Segment):
+   - Initialized global and static variables.
+   - Stored in the data segment.
+   - Global variables with explicit initialization are stored here.
+
+  - Uninitialized Data (BSS Segment):
+   - Contains uninitialized global and static variables.
+   - Initialized to zero or NULL by the operating system.
+   - Space is allocated, but the actual values are set to zero during runtime.
+   - Helps in conserving space by not storing redundant zero values.
+
+3. Stack:
+  - Dynamic area used for local variables, function calls, and function parameters.
+  - Grows and shrinks during program execution.
+  - LIFO (Last In, First Out) structure.
+  - Managed by the system and typically limited in size.
+  - Memory allocated here is reclaimed when the function exits.
+
+4. Heap:
+  - Area used for dynamic memory allocation (e.g., `malloc`, `calloc` in C).
+  - Managed explicitly by the programmer.
+  - Memory here is allocated and deallocated as needed.
+  - Not inherently organized in a structured manner.
+
+
+Key Points:
+
+- Address Space: Memory layout differs based on the architecture and operating system.
+- Stack vs. Heap: Stack memory is managed automatically and is used for local variables and function calls. The heap is managed explicitly and is used for dynamic memory allocation.
+- Data and BSS Segments: Segments for initialized and uninitialized data respectively, holding global and static variables.
+- Text Segment: Contains the executable code and is typically read-only.
+
+Importance:
+
+- Memory Management: Understanding memory layout aids in managing memory effectively.
+- Debugging: Helps in diagnosing issues related to memory allocation, buffer overflows, etc.
+- Performance Optimization: Utilizing different memory segments optimally can improve performance.
+
+Understanding the memory layout of a C program is fundamental for efficient programming, memory management, and debugging. It plays a vital role in writing robust and efficient code, especially in resource-constrained environments or when dealing with low-level system programming.
