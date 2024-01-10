@@ -1,0 +1,55 @@
+What is constructor forwarding in C++
+
+Constructor forwarding in C++ refers to the practice of one constructor calling another constructor within the same class. 
+This feature is particularly useful in avoiding code duplication when multiple constructors share common initialization logic. 
+Constructor forwarding is available in C++11 and later.
+
+Here's an example to illustrate constructor forwarding using the initialization list and the this pointer:
+
+#include <iostream>
+
+class MyClass {
+public:
+    // Default constructor
+    MyClass() : MyClass(0, 0) {
+        std::cout << "Default constructor" << std::endl;
+    }
+
+    // Constructor with parameters
+    MyClass(int x, int y) : x_(x), y_(y) {
+        std::cout << "Parameterized constructor" << std::endl;
+    }
+
+    // Other member functions
+    void printCoordinates() const {
+        std::cout << "Coordinates: (" << x_ << ", " << y_ << ")" << std::endl;
+    }
+
+private:
+    int x_;
+    int y_;
+};
+
+int main() {
+    // Creating objects using different constructors
+    MyClass obj1;         // Calls the default constructor
+    MyClass obj2(2, 3);    // Calls the parameterized constructor
+
+    // Accessing member functions
+    obj1.printCoordinates();
+    obj2.printCoordinates();
+
+    return 0;
+}
+
+
+In this example:
+
+The default constructor (MyClass()) forwards its work to the parameterized constructor (MyClass(int x, int y)) using the constructor delegation syntax : MyClass(0, 0). 
+This way, both constructors share the common initialization logic defined in the parameterized constructor.
+
+The parameterized constructor initializes the private members x_ and y_ based on the provided arguments.
+
+The main function demonstrates creating objects using both constructors and accessing a member function.
+
+Constructor forwarding is a handy technique for reusing initialization logic and maintaining consistency across different constructors within the same class. It helps avoid duplicating code while providing flexibility in how objects can be constructed.
