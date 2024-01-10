@@ -1,0 +1,86 @@
+
+Which SOLID principle is violated here:
+#include <iostream>
+class Rectangle{
+    protected:
+        int h;
+        int w;
+    public:
+    virtual void setHeight(int i){
+        h = i;
+    }
+    
+    virtual void setWidtht(int i){
+        w = i;
+    }
+
+    virtual int getHeight(){
+        return h;
+    }
+
+    virtual int getWidth(){
+        return w;
+    }
+};
+
+class Square : public Rectangle{
+    public:
+    virtual void setHeight(int i){
+        h = i;
+        w = i;
+    }
+    
+    virtual void setWidtht(int i){
+        w = i;
+        h = i;
+    }
+
+    virtual int getHeight(){
+        return h;
+    }
+
+    virtual int getWidth(){
+        return w;
+    }
+};
+
+int main() {
+    
+    std::cout << "Hello LeetCoder";
+}
+
+
+===============================================================================================================================
+Problem/Output in below:
+#include <stdio.h>
+#include<iostream>
+
+#include <memory>
+
+class A{
+    int a;
+    public:
+        int getVal(){
+            return a;
+        }
+        void setVal(int i){
+            a = i;
+        }
+};
+
+void func1(std::shared_ptr<A>& a){
+    int i = a->getVal();  //a.getVal(); 
+    std::cout<<"func1 integer = "<<i<<std::endl;
+}
+
+void func2(A* a){
+    int i = a->getVal();
+    std::cout<<"func2 integer = "<<i<<std::endl;
+}
+
+int main() {
+    std::shared_ptr<A> spa = std::make_shared<A>();
+    func1(spa);
+    func2(spa.get());
+    return 0;
+}
