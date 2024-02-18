@@ -49,6 +49,94 @@ int main() {
     std::cout << "Hello LeetCoder";
 }
 
+Solution:
+
+The code violates the Liskov Substitution Principle (LSP).
+
+Explanation:
+
+The Liskov Substitution Principle states that objects of a superclass should be replaceable with objects of its subclasses without 
+affecting the correctness of the program.
+In this code, Square is a subclass of Rectangle.
+However, the behavior of Square's setWidtht and setHeight methods differs from that of Rectangle.
+In Rectangle, setHeight and setWidtht allow setting the height and width independently.
+In Square, these methods violate the principle by setting both height and width to the same value, which contradicts the behavior expected from a rectangle.
+This violates the LSP because Square is not a proper subtype of Rectangle. Substituting a Square for a Rectangle may lead to unexpected behavior in 
+applications that rely on the independent setting of width and height.
+Therefore, this code violates the Liskov Substitution Principle.
+
+
+Solution to improve this code:
+
+To adhere to the Liskov Substitution Principle (LSP), we need to ensure that the behavior of the derived class (Square) does not contradict 
+the behavior expected from its base class (Rectangle). In the case of a square and a rectangle, a square is a special case of a rectangle where 
+all sides are equal.
+
+Here's a revised version of the code to adhere to LSP:
+
+#include <iostream>
+
+class Rectangle {
+protected:
+    int height;
+    int width;
+public:
+    virtual void setHeight(int h) {
+        height = h;
+    }
+    
+    virtual void setWidth(int w) {
+        width = w;
+    }
+
+    int getHeight() const {
+        return height;
+    }
+
+    int getWidth() const {
+        return width;
+    }
+    
+    int getArea() const {
+        return height * width;
+    }
+};
+
+class Square : public Rectangle {
+public:
+    virtual void setHeight(int side) override {
+        height = side;
+        width = side;
+    }
+    
+    virtual void setWidth(int side) override {
+        height = side;
+        width = side;
+    }
+};
+
+int main() {
+    Rectangle rect;
+    rect.setHeight(5);
+    rect.setWidth(10);
+    std::cout << "Rectangle Area: " << rect.getArea() << std::endl;
+    
+    Square square;
+    square.setHeight(5);
+    std::cout << "Square Area: " << square.getArea() << std::endl;
+    
+    return 0;
+}
+
+
+Changes made:
+
+The height and width members of the base class Rectangle are made protected instead of private to allow access to derived classes.
+setHeight and setWidth methods are overridden in the Square class to ensure that when setting the side of a square, both height and width
+are set to the same value.
+Added a method getArea in the Rectangle class to calculate the area, which can be used by both Rectangle and Square.
+Removed unnecessary virtual keyword in getWidth and getHeight methods since they are not overridden in derived classes.
+In main, demonstrated the usage of both Rectangle and Square classes to show the correctness of area calculations for both shapes.
 
 ===============================================================================================================================
 Problem/Output in below:
