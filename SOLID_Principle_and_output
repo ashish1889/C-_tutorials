@@ -138,7 +138,7 @@ Added a method getArea in the Rectangle class to calculate the area, which can b
 Removed unnecessary virtual keyword in getWidth and getHeight methods since they are not overridden in derived classes.
 In main, demonstrated the usage of both Rectangle and Square classes to show the correctness of area calculations for both shapes.
 
-===============================================================================================================================
+====================================================================================================================================================================
 Problem/Output in below:
 #include <stdio.h>
 #include<iostream>
@@ -172,3 +172,31 @@ int main() {
     func2(spa.get());
     return 0;
 }
+
+The given code compiles and runs without any syntactical or logical errors. 
+However, there is a potential problem related to memory management in the function func2.
+
+In the main function, a std::shared_ptr<A> named spa is created to manage the memory of the A object. 
+This shared pointer is then passed to both func1 and func2.
+
+In func1, the shared pointer is passed by reference and accessed through the arrow operator (->). 
+This is correct usage of std::shared_ptr.
+
+In func2, however, the raw pointer is obtained from the shared pointer using the get() function. 
+While this is allowed, it's important to note that using raw pointers obtained from smart pointers can lead to potential issues if not used carefully:
+
+Lifetime Management: When you pass a raw pointer (A*) obtained from a std::shared_ptr, you lose the safety net provided by smart pointers. 
+If the shared pointer goes out of scope or gets reset while a raw pointer is still in use, it could lead to a dangling pointer issue.
+
+Ownership Semantics: Using a raw pointer doesn't convey ownership semantics. 
+Other parts of the code might assume ownership or perform memory management operations, leading to confusion or memory leaks.
+
+To mitigate these issues, it's generally better to use smart pointers consistently throughout the codebase. 
+If func2 doesn't need shared ownership of the A object, you can pass it a const reference to avoid potential misuse:
+
+void func2(const A& a) {
+    int i = a.getVal();
+    std::cout << "func2 integer = " << i << std::endl;
+}
+
+By passing A by const reference, you can ensure that the function func2 safely accesses the object without taking ownership or affecting its lifetime.
